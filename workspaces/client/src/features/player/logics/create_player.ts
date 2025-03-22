@@ -18,7 +18,7 @@ class ShakaPlayerWrapper implements PlayerWrapper {
     this.playerType = playerType;
     this._player.configure({
       streaming: {
-        bufferingGoal: 5,
+        bufferingGoal: 20,
       },
     });
   }
