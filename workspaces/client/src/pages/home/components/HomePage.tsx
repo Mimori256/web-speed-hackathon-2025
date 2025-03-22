@@ -1,8 +1,7 @@
 import { createStore } from '@wsh-2025/client/src/app/createStore';
 import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
-import { useLoaderData } from 'react-router-dom'; // React Router のフックを追加
+import { useLoaderData } from 'react-router-dom';
 
-// prefetch はそのまま維持
 export const prefetch = async (store: ReturnType<typeof createStore>) => {
   const modules = await store
     .getState()
@@ -10,9 +9,7 @@ export const prefetch = async (store: ReturnType<typeof createStore>) => {
   return { modules };
 };
 
-// HomePage は useLoaderData を使ってローダーからのデータを取得
 export const HomePage = () => {
-  // loaderの戻り値の型を指定
   const { modules } = useLoaderData() as Awaited<ReturnType<typeof prefetch>>;
 
   return (

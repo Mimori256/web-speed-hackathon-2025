@@ -45,7 +45,9 @@ async function getSeekThumbnail({ episode }: Params) {
     [
       ['-i', `concat:${segmentFiles.map((f) => f.id).join('|')}`],
       ['-c:v', 'copy'],
+      ['-an'],
       ['-map', '0:v:0'],
+      ['-movflags', '+faststart'],
       ['-f', 'mp4'],
       'concat.mp4',
     ].flat(),
