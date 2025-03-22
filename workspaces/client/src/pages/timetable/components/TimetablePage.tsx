@@ -42,7 +42,7 @@ export const TimetablePage = () => {
         <div className="sticky inset-y-0 left-0 z-10 shrink-0 grow-0 bg-[#000000] [grid-area:hours]">
           <TimelineYAxis />
         </div>
-        <div className="flex flex-row [grid-area:content]">
+        <div className="flex flex-row [grid-area:content]" style={{ height: '3360px', width: '11520px' }}>
           {programLists.map((programList, index) => {
             const channelId = channelIds[index];
             invariant(channelId);

@@ -1,7 +1,8 @@
 import { createStore } from '@wsh-2025/client/src/app/createStore';
 import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
-import { useRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useRecommended';
+import { useLoaderData } from 'react-router-dom'; // React Router のフックを追加
 
+// prefetch はそのまま維持
 export const prefetch = async (store: ReturnType<typeof createStore>) => {
   const modules = await store
     .getState()
@@ -9,13 +10,14 @@ export const prefetch = async (store: ReturnType<typeof createStore>) => {
   return { modules };
 };
 
+// HomePage は useLoaderData を使ってローダーからのデータを取得
 export const HomePage = () => {
-  const modules = useRecommended({ referenceId: 'entrance' });
+  // loaderの戻り値の型を指定
+  const { modules } = useLoaderData() as Awaited<ReturnType<typeof prefetch>>;
 
   return (
     <>
       <title>Home - AremaTV</title>
-
       <div className="w-full py-[48px]">
         {modules.map((module) => {
           return (

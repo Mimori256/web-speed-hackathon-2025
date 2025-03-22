@@ -40,10 +40,10 @@ export const SeriesPage = () => {
               height="auto"
               src={series.thumbnailUrl}
               width="400px"
-              loading="lazy"
+              loading="eager"
             />
           </Flipped>
-          <div className="grow-1 shrink-1 overflow-hidden">
+          <div className="shrink-1 grow-1 overflow-hidden">
             <h1 className="mb-[16px] text-[32px] font-bold text-[#ffffff]">
               <Ellipsis ellipsis reflowOnResize maxLine={2} text={series.title} visibleLine={2} />
             </h1>
