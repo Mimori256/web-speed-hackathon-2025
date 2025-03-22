@@ -20,7 +20,7 @@ function main() {
   const router = createBrowserRouter(createRoutes(store), {});
 
   hydrateRoot(
-    document.body,
+    document,
     <StrictMode>
       <StoreProvider createStore={() => store}>
         <RouterProvider router={router} />
