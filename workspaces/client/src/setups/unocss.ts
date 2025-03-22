@@ -2,6 +2,12 @@ import { IconifyJSON } from '@iconify/types';
 import presetIcons from '@unocss/preset-icons/browser';
 import presetWind3 from '@unocss/preset-wind3';
 import initUnocssRuntime, { defineConfig } from '@unocss/runtime';
+import biArchive from '@iconify/json/json/bi.json';
+import bxHomeAlt from '@iconify/json/json/bx.json';
+import faSolidStar from '@iconify/json/json/fa-solid.json';
+import fluentPerson from '@iconify/json/json/fluent.json';
+import linemdSunnyOutline from '@iconify/json/json/line-md.json';
+import materialSymbolsSettings from '@iconify/json/json/material-symbols.json';
 
 async function init() {
   await initUnocssRuntime({
@@ -49,17 +55,12 @@ async function init() {
         presetWind3(),
         presetIcons({
           collections: {
-            bi: () => import('@iconify/json/json/bi.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            bx: () => import('@iconify/json/json/bx.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            'fa-regular': () =>
-              import('@iconify/json/json/fa-regular.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            'fa-solid': () =>
-              import('@iconify/json/json/fa-solid.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            fluent: () => import('@iconify/json/json/fluent.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            'line-md': () =>
-              import('@iconify/json/json/line-md.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            'material-symbols': () =>
-              import('@iconify/json/json/material-symbols.json').then((m): IconifyJSON => m.default as IconifyJSON),
+            bi: () => Promise.resolve(biArchive as IconifyJSON),
+            bx: () => Promise.resolve(bxHomeAlt as IconifyJSON),
+            'fa-solid': () => Promise.resolve(faSolidStar as IconifyJSON),
+            fluent: () => Promise.resolve(fluentPerson as IconifyJSON),
+            'line-md': () => Promise.resolve(linemdSunnyOutline as IconifyJSON),
+            'material-symbols': () => Promise.resolve(materialSymbolsSettings as IconifyJSON),
           },
         }),
       ],
