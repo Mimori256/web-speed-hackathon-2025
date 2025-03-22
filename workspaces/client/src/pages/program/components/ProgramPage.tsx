@@ -1,9 +1,8 @@
 import { DateTime } from 'luxon';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Ellipsis from 'react-ellipsis-component';
 import { Flipped } from 'react-flip-toolkit';
 import { Link, Params, useNavigate, useParams } from 'react-router';
-import { useUpdate } from 'react-use';
 import invariant from 'tiny-invariant';
 
 import { createStore } from '@wsh-2025/client/src/app/createStore';
@@ -24,18 +23,20 @@ export const prefetch = async (store: ReturnType<typeof createStore>, { programI
   const since = now.startOf('day').toISO();
   const until = now.endOf('day').toISO();
 
-  const program = await store.getState().features.program.fetchProgramById({ programId });
-  const channels = await store.getState().features.channel.fetchChannels();
-  const timetable = await store.getState().features.timetable.fetchTimetable({ since, until });
-  const modules = await store
-    .getState()
-    .features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: programId });
+  const [channels, modules, program, timetable] = await Promise.all([
+    store.getState().features.channel.fetchChannels(),
+    store.getState().features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: programId }),
+    store.getState().features.program.fetchProgramById({ programId }),
+    store.getState().features.timetable.fetchTimetable({ since, until }),
+  ]);
   return { channels, modules, program, timetable };
 };
 
 export const ProgramPage = () => {
   const { programId } = useParams();
   invariant(programId);
+
+  const [currentTime, setCurrentTime] = useState(DateTime.now());
 
   const program = useProgramById({ programId });
   invariant(program);
@@ -49,10 +50,9 @@ export const ProgramPage = () => {
 
   const playerRef = usePlayerRef();
 
-  const forceUpdate = useUpdate();
   const navigate = useNavigate();
-  const isArchivedRef = useRef(DateTime.fromISO(program.endAt) <= DateTime.now());
-  const isBroadcastStarted = DateTime.fromISO(program.startAt) <= DateTime.now();
+  const isArchivedRef = useRef(DateTime.fromISO(program.endAt) <= currentTime);
+  const isBroadcastStarted = DateTime.fromISO(program.startAt) <= currentTime;
   useEffect(() => {
     if (isArchivedRef.current) {
       return;
@@ -60,12 +60,12 @@ export const ProgramPage = () => {
 
     // 放送前であれば、放送開始になるまで画面を更新し続ける
     if (!isBroadcastStarted) {
-      let timeout = setTimeout(function tick() {
-        forceUpdate();
-        timeout = setTimeout(tick, 250);
-      }, 250);
+      const interval = setInterval(() => {
+        setCurrentTime(DateTime.now());
+      }, 1000);
+
       return () => {
-        clearTimeout(timeout);
+        clearInterval(interval);
       };
     }
 
@@ -84,7 +84,6 @@ export const ProgramPage = () => {
         });
       } else {
         isArchivedRef.current = true;
-        forceUpdate();
       }
     }, 250);
     return () => {

@@ -508,6 +508,9 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
           },
         },
       });
+      if (req.params.referenceId !== 'entrance') {
+        return reply.code(200).send(modules.slice(0, 1));
+      }
       reply.code(200).send(modules);
     },
   });

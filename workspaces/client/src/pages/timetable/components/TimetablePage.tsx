@@ -9,13 +9,18 @@ import { ProgramList } from '@wsh-2025/client/src/pages/timetable/components/Pro
 import { TimelineYAxis } from '@wsh-2025/client/src/pages/timetable/components/TimelineYAxis';
 import { useShownNewFeatureDialog } from '@wsh-2025/client/src/pages/timetable/hooks/useShownNewFeatureDialog';
 
+import { useMemo } from 'react';
+
 export const prefetch = async (store: ReturnType<typeof createStore>) => {
   const now = DateTime.now();
   const since = now.startOf('day').toISO();
   const until = now.endOf('day').toISO();
 
-  const channels = await store.getState().features.channel.fetchChannels();
-  const programs = await store.getState().features.timetable.fetchTimetable({ since, until });
+  const [channels, programs] = await Promise.all([
+    store.getState().features.channel.fetchChannels(),
+    store.getState().features.timetable.fetchTimetable({ since, until }),
+  ]);
+
   return { channels, programs };
 };
 
@@ -23,8 +28,8 @@ export const TimetablePage = () => {
   const record = useTimetable();
   const shownNewFeatureDialog = useShownNewFeatureDialog();
 
-  const channelIds = Object.keys(record);
-  const programLists = Object.values(record);
+  const channelIds = useMemo(() => Object.keys(record), [record]);
+  const programLists = useMemo(() => Object.values(record), [record]);
 
   return (
     <>
