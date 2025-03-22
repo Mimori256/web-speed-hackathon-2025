@@ -7,6 +7,12 @@ const config = {
   devtool: 'source-map',
   entry: './src/main.tsx',
   mode: 'production',
+  cache: {
+    type: 'filesystem',
+    buildDependencies: {
+      config: ['webpack.config.mjs'],
+    },
+  },
   module: {
     rules: [
       {
