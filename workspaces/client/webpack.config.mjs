@@ -30,9 +30,7 @@ const config = {
               [
                 '@babel/preset-env',
                 {
-                  targets: {
-                    chrome: '131',
-                  },
+                  targets: 'defaults',
                   useBuiltIns: 'entry',
                 },
               ],
