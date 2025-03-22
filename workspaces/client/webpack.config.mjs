@@ -2,6 +2,7 @@ import path from 'node:path';
 
 import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import TerserPlugin from 'terser-webpack-plugin';
 
 /** @type {import('webpack').Configuration} */
 const config = {
@@ -59,6 +60,31 @@ const config = {
     path: path.resolve(import.meta.dirname, './dist'),
     publicPath: 'auto',
     pathinfo: false,
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          parse: {
+            ecma: 2020,
+          },
+          compress: {
+            inline: 2,
+            drop_console: true,
+            drop_debugger: true,
+            dead_code: true,
+            unused: true,
+            passes: 2,
+          },
+          mangle: true,
+          output: {
+            comments: false,
+            ecma: 2020,
+          },
+        },
+      }),
+    ],
   },
   plugins: [
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
