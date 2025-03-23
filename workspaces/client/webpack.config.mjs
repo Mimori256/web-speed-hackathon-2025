@@ -26,17 +26,7 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  targets: 'defaults',
-                  useBuiltIns: 'entry',
-                },
-              ],
-              ['@babel/preset-react', { runtime: 'automatic' }],
-              ['@babel/preset-typescript'],
-            ],
+            presets: [['@babel/preset-react', { runtime: 'automatic' }], ['@babel/preset-typescript']],
           },
         },
       },
