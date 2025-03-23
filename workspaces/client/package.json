@@ -63,7 +63,6 @@
     "@wsh-2025/configs": "workspace:*",
     "arraybuffer-loader": "1.0.8",
     "babel-loader": "9.2.1",
-    "css-minimizer-webpack-plugin": "7.0.2",
     "shaka-player": "4.12.5",
     "terser-webpack-plugin": "5.3.14",
     "typescript": "5.7.2",

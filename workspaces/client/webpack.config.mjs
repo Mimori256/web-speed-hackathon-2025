@@ -2,7 +2,6 @@ import path from 'node:path';
 
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
 /** @type {import('webpack').Configuration} */
 const config = {
@@ -30,9 +29,7 @@ const config = {
               [
                 '@babel/preset-env',
                 {
-                  targets: {
-                    chrome: '131',
-                  },
+                  targets: 'defaults',
                   useBuiltIns: 'entry',
                 },
               ],
@@ -71,22 +68,15 @@ const config = {
     usedExports: true,
     minimizer: [
       new TerserPlugin({
-        extractComments: false,
+        extractComments: true,
         terserOptions: {
           compress: {
             drop_console: true,
             dead_code: true,
             unused: true,
-            passes: 2,
-            drop_debugger: true,
-          },
-          mangle: true,
-          format: {
-            comments: false,
           },
         },
       }),
-      new CssMinimizerPlugin(),
     ],
   },
   plugins: [new webpack.EnvironmentPlugin({ API_BASE_URL: '/api', NODE_ENV: '' })],
